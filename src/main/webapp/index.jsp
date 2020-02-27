@@ -1,15 +1,20 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%--
+  Created by IntelliJ IDEA.
+  User: dcash92
+  Date: 2/26/20
+  Time: 11:00 AM
+  To change this template use File | Settings | File Templates.
+--%>
+<%! private int counter = 0; %>
+<% counter ++; %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title><%= "some title" %></title>
+    <title>Title</title>
 </head>
 <body>
-    <c:if test="true">
-        <h1>Variable names should be very descriptive</h1>
-    </c:if>
-    <c:if test="false">
-        <h1>single letter variable names are good</h1>
-    </c:if>
+<% if(request.getParameter("reset") != null) counter = Integer.parseInt(request.getParameter("reset"));%>
+<h1>The current count is <%= counter %> </h1>
+
 </body>
 </html>
