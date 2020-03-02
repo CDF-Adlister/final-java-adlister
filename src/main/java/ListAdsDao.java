@@ -1,5 +1,7 @@
+import javax.servlet.annotation.WebServlet;
 import java.util.ArrayList;
 import java.util.List;
+@WebServlet(name = "ViewProfileServlet", urlPatterns = "/profile")
 
 public class ListAdsDao implements Ads {
     private List<Ad> ads;
@@ -12,7 +14,7 @@ public class ListAdsDao implements Ads {
     }
 
     private List<Ad> generateAds() {
-        List<Ad> ads = new ArrayList<>();
+        ads = new ArrayList<>();
         ads.add(new Ad(
             1,
             1,
@@ -37,6 +39,7 @@ public class ListAdsDao implements Ads {
             "JavaScript Developer needed",
             "Must have strong Java skills"
         ));
+
         return ads;
     }
 }
