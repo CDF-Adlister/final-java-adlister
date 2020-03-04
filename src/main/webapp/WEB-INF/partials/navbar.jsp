@@ -3,11 +3,12 @@
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
             <a class="navbar-brand" href="${pageContext.request.contextPath}/ads">Adlister</a>
+            <a class="navbar-brand" href="${pageContext.request.contextPath}/WEB-INF/itemIndex.jsp">Items</a>
         </div>
         <ul class="nav navbar-nav navbar-right">
             <li><a href="${pageContext.request.contextPath}/login">Login</a></li>
             <li><a href="${pageContext.request.contextPath}/logout">Logout</a></li>
         </ul>
     </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
+<%--    </div><!-- /.container-fluid -->--%>
 </nav>
