@@ -7,6 +7,10 @@
         <ul class="nav navbar-nav navbar-right">
             <li><a href="/login">Login</a></li>
             <li><a href="/logout">Logout</a></li>
+            <li><a href="/register">Register User</a></li>
+            <li><a href="/ads/update">Update Ads</a></li>
+            <li><a href="/ads/create">Create Ads</a></li>
+            <li><a href="/ads/delete">Delete Ads</a></li>
         </ul>
     </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->

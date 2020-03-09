@@ -5,15 +5,15 @@ import com.mysql.cj.jdbc.Driver;
 
 import java.sql.*;
 
-public class MySQLUsersDao implements Users {
+public class MySQLUsersDao extends com.codeup.adlister.dao.Config implements com.codeup.adlister.dao.Users {
     private Connection connection;
 
-    public MySQLUsersDao(Config config) {
+    public MySQLUsersDao(com.codeup.adlister.dao.Config config) {
         try {
             DriverManager.registerDriver(new Driver());
             connection = DriverManager.getConnection(
                 config.getUrl(),
-                config.getUser(),
+                config.getUsername(),
                 config.getPassword()
             );
         } catch (SQLException e) {
