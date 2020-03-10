@@ -17,9 +17,9 @@ public class MySQLAdsDao implements Ads {
         try {
             DriverManager.registerDriver(new Driver());
             connection = DriverManager.getConnection(
-                config.getUrl(),
-                config.getUsername(),
-                config.getPassword()
+                    config.getUrl(),
+                    config.getUsername(),
+                    config.getPassword()
             );
         } catch (SQLException e) {
             throw new RuntimeException("Error connecting to the database!", e);
@@ -56,16 +56,26 @@ public class MySQLAdsDao implements Ads {
     }
 
     @Override
-    public void update(Ad ad) {
-
+    public void update(Ad ad) throws SQLException {
+        String updateQuery = "UPDATE ads " +
+        "SET title = 'User Input Title', description = 'User Input Description' " +
+        "WHERE id = " + "4;";
+        PreparedStatement stmt = connection.prepareStatement(updateQuery, Statement.RETURN_GENERATED_KEYS);
+        stmt.setLong(1, ad.getUserId());
+        stmt.setString(2, ad.getTitle());
+        stmt.setString(3, ad.getDescription());
+        stmt.executeUpdate();
+        if (ad.getId() == 9){
+            //do something
+        }
     }
 
     private Ad extractAd(ResultSet rs) throws SQLException {
         return new Ad(
-            rs.getLong("id"),
-            rs.getLong("user_id"),
-            rs.getString("title"),
-            rs.getString("description")
+                rs.getLong("id"),
+                rs.getLong("user_id"),
+                rs.getString("title"),
+                rs.getString("description")
         );
     }
 

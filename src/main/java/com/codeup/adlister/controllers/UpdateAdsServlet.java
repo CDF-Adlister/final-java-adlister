@@ -16,6 +16,7 @@ public class UpdateAdsServlet extends HttpServlet{
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         request.getRequestDispatcher("/WEB-INF/ads/update.jsp")
                 .forward(request,response);
+
     }
 
 //    String sql = "UPDATE Ads SET title=?, description=?";
