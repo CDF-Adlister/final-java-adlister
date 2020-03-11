@@ -1,6 +1,7 @@
 package com.codeup.adlister.dao;
 
 import com.codeup.adlister.models.Ad;
+import com.mysql.cj.api.jdbc.JdbcConnection;
 import com.mysql.cj.jdbc.Driver;
 
 import java.io.FileInputStream;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MySQLAdsDao implements Ads {
-    private Connection connection = null;
+    private Connection connection;
 
     public MySQLAdsDao(com.codeup.adlister.dao.Config config) {
         try {
@@ -24,6 +25,21 @@ public class MySQLAdsDao implements Ads {
         } catch (SQLException e) {
             throw new RuntimeException("Error connecting to the database!", e);
         }
+    }
+
+    protected void connect(com.codeup.adlister.dao.Config config) throws SQLException {
+        if (connection == null || connection.isClosed()) {
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+            } catch (ClassNotFoundException e) {
+                throw new SQLException(e);
+            }
+        }
+        connection = DriverManager.getConnection(
+                config.getUrl(),
+                config.getUsername(),
+                config.getPassword()
+        );
     }
 
     @Override
@@ -58,17 +74,46 @@ public class MySQLAdsDao implements Ads {
     @Override
     public void update(Ad ad) throws SQLException {
         String updateQuery = "UPDATE ads " +
-        "SET title = 'User Input Title', description = 'User Input Description' " +
-        "WHERE id = " + "4;";
+                "SET title = 'User Input Title', description = 'User Input Description' " +
+                "WHERE id = " + "4;";
         PreparedStatement stmt = connection.prepareStatement(updateQuery, Statement.RETURN_GENERATED_KEYS);
         stmt.setLong(1, ad.getUserId());
         stmt.setString(2, ad.getTitle());
         stmt.setString(3, ad.getDescription());
         stmt.executeUpdate();
-        if (ad.getId() == 9){
+        if (ad.getId() == 9) {
             //do something
         }
     }
+
+    //    @Override
+//    public boolean delete(Ad ad) throws SQLException {
+//        String deleteQuery = "DELETE FROM ads WHERE id = ?";
+//        PreparedStatement stmt = connection.prepareStatement(deleteQuery, Statement.RETURN_GENERATED_KEYS);
+//        stmt.setLong(1, ad.getId());
+//        boolean rowDeleted = stmt.executeUpdate() > 0;
+//        stmt.close();
+//        disconnect();
+//        return rowDeleted;
+//    }
+
+    @Override
+    public Long delete(int id) throws SQLException {
+        String deleteQuery = "DELETE FROM ads WHERE id = ?";
+        PreparedStatement stmt = connection.prepareStatement(deleteQuery, Statement.RETURN_GENERATED_KEYS);
+        stmt.setInt(1, id);
+        stmt.executeUpdate();
+        ResultSet rs = stmt.getGeneratedKeys();
+        rs.next();
+        return rs.getLong(1);
+    }
+
+    protected void disconnect() throws SQLException {
+        if (connection != null && !connection.isClosed()) {
+            connection.close();
+        }
+    }
+
 
     private Ad extractAd(ResultSet rs) throws SQLException {
         return new Ad(
