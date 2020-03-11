@@ -1,6 +1,9 @@
 package com.codeup.adlister.controllers;
         import com.codeup.adlister.dao.DaoFactory;
+        import com.codeup.adlister.dao.ListAdsDao;
+        import com.codeup.adlister.dao.MySQLAdsDao;
         import com.codeup.adlister.models.Ad;
+        import com.codeup.adlister.models.User;
 
         import javax.servlet.ServletException;
         import javax.servlet.annotation.WebServlet;
@@ -10,31 +13,25 @@ package com.codeup.adlister.controllers;
         import java.io.IOException;
         import java.sql.Connection;
         import java.sql.PreparedStatement;
+        import java.sql.SQLOutput;
 
 @WebServlet("/ads/update")
-public class UpdateAdsServlet extends HttpServlet{
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-        request.getRequestDispatcher("/WEB-INF/ads/update.jsp")
-                .forward(request,response);
+public class UpdateAdsServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String update = request.getParameter("selectedUpdateAd");
+        request.setAttribute("ad", DaoFactory.getAdsDao().findByID(update));
+        request.getRequestDispatcher("/WEB-INF/ads/update.jsp").forward(request, response);
     }
 
-//    String sql = "UPDATE Ads SET title=?, description=?";
-//    PreparedStatement statement = Connection.prepareStatement(sql);
-//    statement.setString(1, "123");
-//    statement.setString(2, "234");
-//    int rowsUpdated = statement.executeUpdate();
-//    if(rowsDeleted > 0){
-//        System.out.println("Ad Updated Successfully!");
-//    }
-
-
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Ad ad = new Ad(
-                1, // for now we'll hardcode the user id
-                request.getParameter("title"),
-                request.getParameter("description")
-        );
-        DaoFactory.getAdsDao().insert(ad);
-        response.sendRedirect("/ads");
+        String ad_id = request.getParameter("id");
+        long id = Long.parseLong(ad_id);
+        String title = request.getParameter("title");
+        String description = request.getParameter("description");
+        DaoFactory.getAdsDao().update(id, title, description);
+        response.sendRedirect("/profile");
     }
 }

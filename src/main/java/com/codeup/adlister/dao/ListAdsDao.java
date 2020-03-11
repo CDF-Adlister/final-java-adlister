@@ -24,13 +24,44 @@ public class ListAdsDao implements Ads {
         // really the dao would handle this
         ad.setId((long) ads.size());
         ads.add(ad);
-        return ad.getId();
+        return null;
     }
 
     @Override
-    public void update(Ad ad) {
+    public Ad findByID(String id) {
+        return null;
+    }
+
+    @Override
+    public List<Ad> findByUsername(int user_id) {
+        return null;
+    }
+
+    @Override
+    public void deleteEntry(Long id) {
 
     }
+
+    @Override
+    public List<Ad> findByUserID(String id) {
+        return null;
+    }
+
+    @Override
+    public List<Ad> search(String input) {
+        return null;
+    }
+
+    @Override
+    public void update(long id, String title, String description) {
+
+    }
+
+    @Override
+    public Object findByUserId(String user_id) {
+        return null;
+    }
+
 
     private List<Ad> generateAds() {
         List<Ad> ads = new ArrayList<>();

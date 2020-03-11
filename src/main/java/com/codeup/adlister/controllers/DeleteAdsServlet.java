@@ -11,18 +11,15 @@ import java.io.IOException;
 
 @WebServlet("/ads/delete")
 public class DeleteAdsServlet extends HttpServlet{
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-        request.getRequestDispatcher("/WEB-INF/ads/delete.jsp")
-                .forward(request,response);
-    }
+//    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+//        request.getRequestDispatcher("/WEB-INF/ads/delete.jsp")
+//                .forward(request,response);
+//    }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Ad ad = new Ad(
-                1, // for now we'll hardcode the user id
-                request.getParameter("title"),
-                request.getParameter("description")
-        );
-        DaoFactory.getAdsDao().insert(ad);
-        response.sendRedirect("/ads");
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String hiddenParam =request.getParameter("selectedAdDelete");
+        long id = Long.parseLong(hiddenParam);
+        DaoFactory.getAdsDao().deleteEntry(id);
+        response.sendRedirect("/profile");
     }
 }
