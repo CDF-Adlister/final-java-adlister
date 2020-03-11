@@ -54,8 +54,6 @@ public class MySQLAdsDao implements Ads {
     }
 
 
-
-
     @Override
     public List<Ad> all() {
         List<Ad> ads = new ArrayList<>();
@@ -64,7 +62,7 @@ public class MySQLAdsDao implements Ads {
             stmt = connection.prepareStatement("SELECT * FROM ads");
             ResultSet rs = stmt.executeQuery();
 
-            while(rs.next()){
+            while (rs.next()) {
                 ads.add(
                         new Ad(
                                 rs.getLong("id"),
@@ -100,7 +98,7 @@ public class MySQLAdsDao implements Ads {
 
 
     private Ad extractAd(ResultSet rs) throws SQLException {
-        if(! rs.next()){
+        if (!rs.next()) {
             return null;
         }
         return new Ad(
@@ -120,8 +118,6 @@ public class MySQLAdsDao implements Ads {
     }
 
 
-
-
     @Override
     // Find all ads for a user based on the foreign key of user_id from ads; obtained when logging in
     public List<Ad> findByUsername(int user_id) {
@@ -138,7 +134,7 @@ public class MySQLAdsDao implements Ads {
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setInt(1, user_id);
         ResultSet rs = stmt.executeQuery();
-        while (rs.next()){
+        while (rs.next()) {
             ads.add(
                     new Ad(
                             rs.getLong("id"),
@@ -152,37 +148,46 @@ public class MySQLAdsDao implements Ads {
     }
 
 
-    public void deleteEntry (Long ID){
-        String query = "DELETE from ads where id = ?";
+//    @Override
+//    public void delete(int id) throws SQLException{
+//        String deleteQuery = "DELETE FROM ads WHERE id = ?";
+//        PreparedStatement statement = connection.prepareStatement(deleteQuery, Statement.RETURN_GENERATED_KEYS);
+//        statement.setInt(1, id);
+//        statement.executeUpdate();
+//        ResultSet rs = statement.getGeneratedKeys();
+//        rs.next();
+//        rs.getLong(1);
+//    }
 
+    @Override
+    public void delete(int id) throws SQLException {
         try {
-            PreparedStatement stmt = connection.prepareStatement(query);
-            stmt.setLong(1, ID);
-            stmt.executeUpdate();
+            String deleteQuery = "DELETE FROM ads WHERE id ='" +id + "'";
+            PreparedStatement stmt = connection.prepareStatement(deleteQuery);
+            stmt.execute();
         } catch (SQLException e) {
-            throw new RuntimeException("Error deleting your ad.", e);
+            throw new RuntimeException("Error deleting ad.");
         }
     }
 
     @Override
     public void update(long id, String title, String description) {
         String query = "UPDATE ads SET title = ?, description = ? where id = ?";
-        try{
+        try {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, title);
             statement.setString(2, description);
             statement.setLong(3, id);
             statement.executeUpdate();
-        }catch(SQLException e){
+        } catch (SQLException e) {
             throw new RuntimeException("There has been an error updating your ad.");
         }
 
     }
 
 
-
     @Override
-    public List<Ad> search(String input){
+    public List<Ad> search(String input) {
         PreparedStatement stmt = null;
         List<Ad> ads = new ArrayList<>();
 
@@ -190,12 +195,12 @@ public class MySQLAdsDao implements Ads {
 
         try {
             stmt = connection.prepareStatement("SELECT * FROM ads WHERE title LIKE ? OR description LIKE ?");
-            stmt.setString(1,"%"+lowerInput+"%");
-            stmt.setString(2,"%"+lowerInput+"%");
+            stmt.setString(1, "%" + lowerInput + "%");
+            stmt.setString(2, "%" + lowerInput + "%");
 
             ResultSet rs = stmt.executeQuery();
 
-            while(rs.next()){
+            while (rs.next()) {
                 ads.add(
                         new Ad(
                                 rs.getLong("id"),
@@ -208,7 +213,7 @@ public class MySQLAdsDao implements Ads {
             }
             return ads;
 
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new RuntimeException("Error retrieving search results");
         }
 
@@ -219,25 +224,6 @@ public class MySQLAdsDao implements Ads {
     public Object findByUserId(String user_id) {
         return null;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }
