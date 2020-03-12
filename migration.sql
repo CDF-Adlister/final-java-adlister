@@ -1,3 +1,4 @@
+
 DROP DATABASE IF EXISTS adlister_db;
 
 CREATE DATABASE IF NOT EXISTS adlister_db;
@@ -9,19 +10,23 @@ DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS ads;
 DROP TABLE IF EXISTS users;
 
-CREATE TABLE IF NOT EXISTS users(
-    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    username VARCHAR(50) NOT NULL,
-    email VARCHAR(100) NOT NULL,
+
+CREATE TABLE IF NOT EXISTS users
+(
+    id       INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    username VARCHAR(50)  NOT NULL,
+    email    VARCHAR(100) NOT NULL,
     password VARCHAR(200) NOT NULL,
     PRIMARY KEY (id),
     UNIQUE (username, email)
 );
+
 INSERT INTO users(username, email, password)
 VALUES ('codeup', 'codeup@codeup.com', 'codeup'),
        ('sally', 'sally@codeup.com', 'sally'),
        ('pepe', 'pepe@codeup.com', 'pepe'),
        ('derek', 'derek@codeup.com', 'derek');
+
 
 CREATE TABLE IF NOT EXISTS ads(
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -44,6 +49,20 @@ VALUES (1, 'Playstation for sale', 'This is a slightly used playstation 1', '$' 
 
 CREATE TABLE IF NOT EXISTS categories(
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+
+CREATE TABLE IF NOT EXISTS ads
+(
+    id          INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    user_id     INT UNSIGNED DEFAULT NULL,
+    title       VARCHAR(250) NOT NULL,
+    description TEXT         NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES users (id)
+);
+
+CREATE TABLE IF NOT EXISTS categories
+(
+    id       INT UNSIGNED NOT NULL AUTO_INCREMENT,
     category VARCHAR(255) DEFAULT 'NONE',
     PRIMARY KEY (id)
 );
@@ -65,7 +84,10 @@ CREATE TABLE IF NOT EXISTS ads_categories(
   FOREIGN KEY (category_id) REFERENCES categories(id)
 );
 
+
 INSERT INTO ads_categories(ad_id, category_id)
 VALUES (1, 2), (1, 6), (2, 2), (2, 6), (2, 7),
        (3, 3), (4, 4), (4, 6), (4, 8), (5, 1),
        (5, 5), (5, 8);
+
+
