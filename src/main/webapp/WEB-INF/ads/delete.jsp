@@ -8,9 +8,9 @@
 <body>
 <div class="container">
     <h1>Delete Ad</h1>
-    <form action="/ads/delete" method="post">
+    <form action="/ads" method="post">
         <div class="form-group">
-            <label for="title">Enter Add Id to be Deleted</label>
+            <label for="title">Enter Ad Id to be Deleted</label>
             <input id="title" name="title" class="form-control" type="text">
         </div>
 
