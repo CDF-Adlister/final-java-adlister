@@ -14,7 +14,7 @@ import java.util.List;
 public class MySQLAdsDao implements Ads {
     private Connection connection;
 
-    public MySQLAdsDao(com.codeup.adlister.dao.Config config) {
+    public MySQLAdsDao(com.codeup.dao.Config config) {
         try {
             DriverManager.registerDriver(new Driver());
             connection = DriverManager.getConnection(
