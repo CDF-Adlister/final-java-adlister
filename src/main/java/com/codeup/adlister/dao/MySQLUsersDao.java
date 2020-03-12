@@ -5,10 +5,11 @@ import com.mysql.cj.jdbc.Driver;
 
 import java.sql.*;
 
-public class MySQLUsersDao implements com.codeup.adlister.dao.Users {
+public class MySQLUsersDao extends com.codeup.dao.Config implements com.codeup.adlister.dao.Users {
+
     private Connection connection;
 
-    public MySQLUsersDao(com.codeup.adlister.dao.Config config) {
+    public MySQLUsersDao(com.codeup.dao.Config config) {
         try {
             DriverManager.registerDriver(new Driver());
             connection = DriverManager.getConnection(
