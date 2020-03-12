@@ -6,6 +6,7 @@ import com.mysql.cj.jdbc.Driver;
 import java.sql.*;
 
 public class MySQLUsersDao extends com.codeup.dao.Config implements com.codeup.adlister.dao.Users {
+
     private Connection connection;
 
     public MySQLUsersDao(com.codeup.dao.Config config) {
@@ -34,6 +35,18 @@ public class MySQLUsersDao extends com.codeup.dao.Config implements com.codeup.a
         }
     }
 
+    public User findById(int id) {
+        String query = "SELECT * FROM users WHERE id = ? LIMIT 1";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setInt(1, id);
+            return extractUser(stmt.executeQuery());
+        } catch (SQLException e) {
+            throw new RuntimeException("Error finding a user by username", e);
+        }
+    }
+
+
     @Override
     public Long insert(User user) {
         String query = "INSERT INTO users(username, email, password) VALUES (?, ?, ?)";
@@ -51,16 +64,36 @@ public class MySQLUsersDao extends com.codeup.dao.Config implements com.codeup.a
         }
     }
 
+
     private User extractUser(ResultSet rs) throws SQLException {
         if (! rs.next()) {
             return null;
         }
         return new User(
-            rs.getLong("id"),
-            rs.getString("username"),
-            rs.getString("email"),
-            rs.getString("password")
+                rs.getLong("id"),
+                rs.getString("username"),
+                rs.getString("email"),
+                rs.getString("password")
         );
     }
+
+    @Override
+    public void updateUser(User updatedUser) {
+        String query = "UPDATE users SET username = ?, email = ?, password = ? where id = ?";
+        try{
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, updatedUser.getUsername());
+            statement.setString(2, updatedUser.getEmail());
+            statement.setString(3, updatedUser.getPassword());
+            statement.setLong(4,updatedUser.getId());
+            statement.executeUpdate();
+        }catch(SQLException e){
+            throw new RuntimeException("Error updating user", e);
+        }
+
+    }
+
+
+
 
 }

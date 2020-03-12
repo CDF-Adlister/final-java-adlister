@@ -1,3 +1,10 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: chaneybrown
+  Date: 3/12/20
+  Time: 11:16 AM
+  To change this template use File | Settings | File Templates.
+--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -9,9 +16,6 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-            </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">
@@ -24,19 +28,19 @@
                         <a class="nav-link" href="${pageContext.request.contextPath}/register">Register</a>
                     </c:if>
                     <%--If user logged in--%>
-                    <c:if test="${sessionScope.user != null}">
+                    <c:if test="${sessionScope.user == null}">
 
-                    <a class="dropdown-item" href="${pageContext.request.contextPath}/ads/create">Create a Post</a>
                     <a class="dropdown-item" href="${pageContext.request.contextPath}/profile">View My Profile</a>
                     <a class="dropdown-item" href="${pageContext.request.contextPath}/update">Modify Account Info</a>
-                    <a class="dropdown-item" href="${pageContext.request.contextPath}/logout">Logout</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="${pageContext.request.contextPath}/ads/create">Create a Post</a>
                 </div>
                 </c:if>
             </li>
         </ul>
-    </div>
-    <form class="form-inline my-2 my-lg-0" method="get" action="search">
+        <form class="form-inline my-2 my-lg-0" method="get" action="search">
         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </div>
 </nav>
